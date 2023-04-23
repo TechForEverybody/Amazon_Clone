@@ -399,6 +399,67 @@ app.post("/getproductdata", (req, res) => {
     );
 });
 
+
+app.post("/recommendForUnloggedInUser", async(req, res) => {
+    // console.log(req.body);
+    let types=[]
+    let ids=req.body.ids
+    for (let index = 0; index < ids.length; index++) {
+        await products.findOne(
+            {
+                _id: ids[index],
+            },
+            (err, data) => {
+                // console.log(data);
+                if (data) {
+                    types.push(data.type)
+                }
+            }
+        );
+    }
+    types=[...new Set(types)]
+    // console.log(types);
+    recommend_data=[]
+    for (let index = 0; index < ids.length; index++) {
+        await products.find(
+            {
+                type: types[index],
+            },
+            (err, data) => {
+                // console.log(data);
+                if (data) {
+                    recommend_data=[...recommend_data,...data]
+                }
+            }
+        );
+    }
+    // console.log(recommend_data);
+    res.status(200).json(recommend_data.slice(0, 4));
+});
+app.post("/getrecentData", async(req, res) => {
+    // console.log(req.body);
+    let recentData=[]
+    let ids=req.body.ids
+    for (let index = 0; index < ids.length; index++) {
+        await products.findOne(
+            {
+                _id: ids[index],
+            },
+            (err, data) => {
+                // console.log(data);
+                if (data) {
+                    recentData.push(data)
+                }
+            }
+        );
+    }
+    // console.log(recentData);
+    res.status(200).json(recentData);
+});
+
+
+
+
 app.post("/getproductsdata", (req, res) => {
     // console.log(req.body);
     products.find(
@@ -428,8 +489,8 @@ app.post("/getsearchresults", (req, res) => {
             },
         },
         (err, data) => {
-            // console.log(data);
-            if (data.length > 0) {
+            console.log(data);
+            if (!!data && data.length > 0) {
                 res.status(200).json({
                     maindata: data,
                     extradata: null,
@@ -461,6 +522,13 @@ app.post("/getsearchresults", (req, res) => {
         }
     );
 });
+
+
+
+
+
+
+
 
 app.post("/addtocart", redirectlogin, (req, res) => {
     // console.log(req);
@@ -495,7 +563,7 @@ app.post("/addtocart", redirectlogin, (req, res) => {
                             }
                         });
                         res.status(200).send({
-                            message: "addes to cart",
+                            message: "added to cart",
                         });
                     } else {
                         res.status(409).send({

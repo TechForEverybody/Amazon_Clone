@@ -6,6 +6,8 @@ import Loader from 'react-loader-spinner'
 import { userContext } from '../../App'
 import Footer from '../templates/Footer'
 import StarPrinting from '../templates/StarPrinting'
+import Recommendation from '../Homepage/Recommendation'
+import Recently_Viewed_Products from '../Homepage/Recently_Viewed_Products'
 
 function Product() {
     let { pdt_id } = useParams()
@@ -82,7 +84,7 @@ function Product() {
                 let res = await responce.json()
                 // console.log(res);
                 if (responce.status === 200) {
-                    dispatch({type:"AddCartItem"})
+                    dispatch({ type: "AddCartItem" })
                     window.alert('added to cart successfully')
                 }
                 else if (responce.status === 409) {
@@ -201,15 +203,17 @@ function Product() {
                             </div>
                         </div>
                     </div>
-                </>) : (<> 
-                <div className="loaderContainer">
-                    <Loader type="Puff" color="#00BFFF" height={100} width={100} />
-                    <Loader type="Audio" color="#00BFFF" height={80} width={80} />
-                    <Loader type="BallTriangle" color="#00BFFF" height={80} width={80} />
-                    <Loader type="Bars" color="#00BFFF" height={80} width={80} />
-                </div>
+                </>) : (<>
+                    <div className="loaderContainer">
+                        <Loader type="Puff" color="#00BFFF" height={100} width={100} />
+                        <Loader type="Audio" color="#00BFFF" height={80} width={80} />
+                        <Loader type="BallTriangle" color="#00BFFF" height={80} width={80} />
+                        <Loader type="Bars" color="#00BFFF" height={80} width={80} />
+                    </div>
                 </>)
             }
+            <Recommendation />
+            <Recently_Viewed_Products />
             <Footer />
 
         </>

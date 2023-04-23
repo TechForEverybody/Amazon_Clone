@@ -6,7 +6,8 @@
     transition: all 0.3s;
     display: flex;
     justify-content: center;
-    min-width: 500px;
+    min-width: 400px;
+    max-width: 500px;
 
 }
 
